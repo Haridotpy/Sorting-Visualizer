@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useArray } from "./context/ArrayProvider";
-import { bubbleSort } from "./algorithms";
+import { bubbleSort, selectionSort } from "./algorithms";
 import { v4 as uuidV4 } from "uuid";
 import Header from "./Components/Header";
 import Element from "./Components/Element";
@@ -26,9 +26,16 @@ const App = () => {
 
 	const sort = () => {
 		console.log("Started!");
+
 		if (algorithm === "bubble_sort") {
 			return bubbleSort(array, updateArray, () => {
-				console.log("Completed");
+				console.log("Completed!");
+			});
+		}
+
+		if (algorithm === "selection_sort") {
+			return selectionSort(array, updateArray, () => {
+				console.log("Completed!");
 			});
 		}
 	};
