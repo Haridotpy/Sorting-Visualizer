@@ -8,6 +8,8 @@ export const useArray = (): ArrayContextType => useContext(ArrayContext);
 export const ArrayProvider = ({ children }: PropsWithChildren) => {
 	const [arraySize, setArraySize] = useState<number>(20);
 	const [array, setArray] = useState<ArrayType[]>([]);
+	const [speed, setSpeed] = useState<number>(250);
+	const [isRunning, setIsRunning] = useState<boolean>(false);
 
 	useEffect(() => {
 		console.log("Generating Array");
@@ -30,12 +32,23 @@ export const ArrayProvider = ({ children }: PropsWithChildren) => {
 			setArray([...array]);
 			setTimeout(() => {
 				resolve();
-			}, 250);
+			}, speed);
 		});
 	};
 
 	return (
-		<ArrayContext.Provider value={{ array, arraySize, updateArray, setArraySize }}>
+		<ArrayContext.Provider
+			value={{
+				array,
+				arraySize,
+				speed,
+				isRunning,
+				setSpeed,
+				updateArray,
+				setArraySize,
+				setIsRunning
+			}}
+		>
 			{children}
 		</ArrayContext.Provider>
 	);

@@ -1,35 +1,29 @@
-import { useState } from "react";
-import { bubbleSort } from "../algorithms";
-import { useArray } from "../context/ArrayProvider";
+interface Props {
+	algorithm: string;
+	arraySize: number;
+	speed: number;
+	onSelectChange: (value: string) => void;
+	onRangeChange: (value: number) => void;
+	onClick: () => void;
+	onInputChange: (value: number) => void;
+}
 
-const Header = () => {
-	const { array, updateArray, arraySize, setArraySize } = useArray();
-	const [algorithm, setAlgorithm] = useState<string>("bubble_sort");
-
-	const onRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value: number = parseInt(e.target.value);
-
-		setArraySize(value);
-	};
-
-	const handleClick = () => {
-		console.log("Started!");
-		if (algorithm === "bubble_sort") {
-			return bubbleSort(array, updateArray, () => {
-				console.log("Completed");
-			});
-		}
-	};
-
-	const changeAlgorithm = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const value = e.target.value;
-		setAlgorithm(value);
-	};
-
+const Header = ({
+	arraySize,
+	algorithm,
+	speed,
+	onSelectChange,
+	onRangeChange,
+	onClick,
+	onInputChange
+}: Props) => {
 	return (
 		<div className="header">
 			<h1>Sorting Visualizer</h1>
-			<select defaultValue="bubble_sort" onChange={changeAlgorithm}>
+			<select
+				defaultValue="bubble_sort"
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(e.target.value)}
+			>
 				<option defaultChecked={algorithm === "bubble_sort"} value="bubble_sort">
 					Bubble Sort
 				</option>
@@ -46,12 +40,30 @@ const Header = () => {
 					value={arraySize}
 					min={3}
 					max={100}
-					onChange={onRangeChange}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						onRangeChange(parseInt(e.target.value))
+					}
 				/>
 			</div>
 
+			<div>
+				<label htmlFor="number-input">Speed: </label>
+				<input
+					type="number"
+					id="number-input"
+					value={speed}
+					max={250}
+					min={0}
+					step={50}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						onInputChange(parseInt(e.target.value))
+					}
+				/>
+				<span>ms</span>
+			</div>
+
 			<div className="header-group">
-				<button className="btn" onClick={handleClick}>
+				<button className="btn" onClick={() => onClick()}>
 					Sort
 				</button>
 			</div>
