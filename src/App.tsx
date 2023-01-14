@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import Header from "./Components/Header";
+import { useArray } from "./context/ArrayProvider";
+import Element from "./Components/Element";
+import { v4 as uuidV4 } from "uuid";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+	const { array } = useArray();
+
+	useEffect(() => {
+		document.title = "Sorting Visualizer";
+	}, []);
+
+	return (
+		<div className="App">
+			<Header />
+			<div className="container">
+				<div id="array">
+					{array.map(a => (
+						<Element
+							key={uuidV4()}
+							value={a.value}
+							isCompared={a.isCompared}
+							isSorted={a.isSorted}
+							isMin={a?.isMin ?? false}
+						/>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+};
 
 export default App;
